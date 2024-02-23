@@ -4,15 +4,46 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [Header("References")]
 
-    // Update is called once per frame
+
+    [Header("Attributes")]
+    [SerializeField] private float speed = 7f;
+
+    private float x;
+    private float z;
     void Update()
     {
-        
+        Move();
+    }
+
+    private void Move() {
+        // Option 1
+        x = Input.GetAxis("Horizontal");
+        z = Input.GetAxis("Vertical");
+        Vector3 move = transform.right * x + transform.forward * z;
+
+        transform.position += move * speed * Time.deltaTime;
+
+        // Option 2
+        /*Vector2 inputVector = new Vector2(0, 0);
+        if (Input.GetKey(KeyCode.W)) {
+            inputVector.y = +1;
+        }
+        if (Input.GetKey(KeyCode.S)) {
+            inputVector.y = -1;
+        }
+        if (Input.GetKey(KeyCode.A)) {
+            inputVector.x = -1;
+        }
+        if (Input.GetKey(KeyCode.W)) {
+            inputVector.x = +1;
+        }
+
+        inputVector = inputVector.normalized;
+
+        Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
+        transform.position += moveDir * speed * Time.deltaTime;
+        */
     }
 }
