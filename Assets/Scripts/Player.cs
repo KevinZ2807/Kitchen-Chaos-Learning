@@ -23,7 +23,10 @@ public class Player : MonoBehaviour
         z = Input.GetAxis("Vertical");
         Vector3 move = transform.right * x + transform.forward * z;
 
-        transform.position += move * speed * Time.deltaTime;
+        transform.position += speed * Time.deltaTime * move;
+
+        float rotationSpeed = 10f;
+        transform.forward = Vector3.Slerp(transform.forward, move, Time.deltaTime * rotationSpeed); // Slerp use for slowly rotation, prevent instant rotation
 
         // Option 2
         /*Vector2 inputVector = new Vector2(0, 0);
