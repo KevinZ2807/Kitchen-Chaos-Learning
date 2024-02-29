@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class Player : MonoBehaviour
 
     private float x;
     private float z;
+    private bool isWalking;
     void Update()
     {
         Move();
@@ -24,6 +26,8 @@ public class Player : MonoBehaviour
         Vector3 move = transform.right * x + transform.forward * z;
 
         transform.position += speed * Time.deltaTime * move;
+
+        isWalking = move != Vector3.zero;
 
         float rotationSpeed = 10f;
         transform.forward = Vector3.Slerp(transform.forward, move, Time.deltaTime * rotationSpeed); // Slerp use for slowly rotation, prevent instant rotation
@@ -48,5 +52,9 @@ public class Player : MonoBehaviour
         Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
         transform.position += moveDir * speed * Time.deltaTime;
         */
+    }
+
+    public bool IsWalking() {    
+        return isWalking;
     }
 }
