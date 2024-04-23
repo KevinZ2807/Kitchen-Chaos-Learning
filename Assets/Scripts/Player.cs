@@ -19,13 +19,11 @@ public class Player : MonoBehaviour
     }
 
     private void Move() {
-        // Option 1
-        Vector3 inputVector = gameInput.GetMovementVector3Slerp();
-        // Option 2
-        //Vector2 inputVector = gameInput.GetMovementVectorNormalized();
-        transform.position += speed * Time.deltaTime * inputVector;
+        Vector2 inputVector = gameInput.GetMovementVectorNormalized();
+        Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
+        transform.position += speed * Time.deltaTime * moveDir;
 
-        isWalking = inputVector != Vector3.zero;
+        isWalking = moveDir != Vector3.zero;
 
         float rotationSpeed = 10f;
         transform.forward = Vector3.Slerp(transform.forward, inputVector, Time.deltaTime * rotationSpeed); // Slerp use for slowly rotation, prevent instant rotation
