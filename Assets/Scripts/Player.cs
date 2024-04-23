@@ -6,14 +6,13 @@ using UnityEngine.EventSystems;
 public class Player : MonoBehaviour
 {
     [Header("References")]
-
+    [SerializeField] private GameInput gameInput;
 
     [Header("Attributes")]
     [SerializeField] private float speed = 7f;
-
-    private float x;
-    private float z;
     private bool isWalking;
+
+
     void Update()
     {
         Move();
@@ -21,37 +20,16 @@ public class Player : MonoBehaviour
 
     private void Move() {
         // Option 1
-        x = Input.GetAxis("Horizontal");
-        z = Input.GetAxis("Vertical");
-        Vector3 move = transform.right * x + transform.forward * z;
+        Vector3 inputVector = gameInput.GetMovementVector3Slerp();
+        // Option 2
+        //Vector2 inputVector = gameInput.GetMovementVectorNormalized();
+        transform.position += speed * Time.deltaTime * inputVector;
 
-        transform.position += speed * Time.deltaTime * move;
-
-        isWalking = move != Vector3.zero;
+        isWalking = inputVector != Vector3.zero;
 
         float rotationSpeed = 10f;
-        transform.forward = Vector3.Slerp(transform.forward, move, Time.deltaTime * rotationSpeed); // Slerp use for slowly rotation, prevent instant rotation
-
-        // Option 2
-        /*Vector2 inputVector = new Vector2(0, 0);
-        if (Input.GetKey(KeyCode.W)) {
-            inputVector.y = +1;
-        }
-        if (Input.GetKey(KeyCode.S)) {
-            inputVector.y = -1;
-        }
-        if (Input.GetKey(KeyCode.A)) {
-            inputVector.x = -1;
-        }
-        if (Input.GetKey(KeyCode.W)) {
-            inputVector.x = +1;
-        }
-
-        inputVector = inputVector.normalized;
-
-        Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
-        transform.position += moveDir * speed * Time.deltaTime;
-        */
+        transform.forward = Vector3.Slerp(transform.forward, inputVector, Time.deltaTime * rotationSpeed); // Slerp use for slowly rotation, prevent instant rotation
+        
     }
 
     public bool IsWalking() {    
